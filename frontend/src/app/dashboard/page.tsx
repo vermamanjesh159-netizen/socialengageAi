@@ -289,7 +289,7 @@ export default function DashboardPage() {
           <h1 className={`text-3xl font-extrabold tracking-tight ${isLight ? "text-zinc-900" : "text-white"}`}>
             AI Engagement Dashboard
           </h1>
-          <p className={`${isLight ? "text-zinc-550" : "text-zinc-400"} text-sm mt-1`}>
+          <p className={`${isLight ? "text-zinc-500" : "text-zinc-400"} text-sm mt-1`}>
             Craft authentic engagement strategies, replies, and comment sets instantly.
           </p>
         </div>
@@ -307,7 +307,7 @@ export default function DashboardPage() {
                   isSelected
                     ? `${itemColors.bg} text-white border-transparent shadow-lg ${itemColors.shadow}`
                     : isLight
-                    ? "bg-white border-zinc-200 text-zinc-650 hover:bg-zinc-50 hover:text-zinc-950"
+                    ? "bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50 hover:text-zinc-950"
                     : "bg-zinc-950 border-zinc-900 text-zinc-400 hover:text-zinc-200"
                 }`}
               >
@@ -356,7 +356,7 @@ export default function DashboardPage() {
                             isObjSelected
                               ? `${currentPlatColors.bg} text-white border-transparent shadow-sm`
                               : isLight
-                              ? "bg-zinc-50 border-zinc-200 text-zinc-650 hover:bg-zinc-100 hover:text-zinc-950"
+                              ? "bg-zinc-50 border-zinc-200 text-zinc-700 hover:bg-zinc-100 hover:text-zinc-950"
                               : "bg-zinc-950/80 border-zinc-900 text-zinc-400 hover:text-white"
                           }`}
                         >
@@ -383,7 +383,7 @@ export default function DashboardPage() {
                         : "bg-zinc-950/80 border-zinc-900 text-zinc-100 placeholder-zinc-600 focus:border-zinc-700"
                     }`}
                   />
-                  <div className={`flex justify-between items-center text-[10px] font-semibold uppercase ${isLight ? "text-zinc-455" : "text-zinc-500"}`}>
+                  <div className={`flex justify-between items-center text-[10px] font-semibold uppercase ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>
                     <span>Platform Rules: {platDetails?.rules || "Standard length"}</span>
                     <span>{contentText.length} chars</span>
                   </div>
@@ -400,16 +400,16 @@ export default function DashboardPage() {
                       onChange={(e) => setStyle(e.target.value)}
                       className={`border rounded-xl px-3 py-2.5 text-xs focus:outline-none cursor-pointer ${
                         isLight
-                          ? "bg-zinc-50 border-zinc-200 text-zinc-850"
+                          ? "bg-zinc-50 border-zinc-200 text-zinc-800"
                           : "bg-zinc-950/80 border-zinc-900 text-zinc-300"
                       }`}
                     >
-                      <option value="Friendly">Friendly</option>
-                      <option value="Professional">Professional</option>
-                      <option value="Expert">Expert / Thought Leader</option>
-                      <option value="Curious">Curious Question</option>
-                      <option value="Funny">Funny / Witty</option>
-                      <option value="Contrarian">Contrarian Perspective</option>
+                      <option value="Friendly" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>Friendly</option>
+                      <option value="Professional" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>Professional</option>
+                      <option value="Expert" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>Expert / Thought Leader</option>
+                      <option value="Curious" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>Curious Question</option>
+                      <option value="Funny" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>Funny / Witty</option>
+                      <option value="Contrarian" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>Contrarian Perspective</option>
                     </select>
                   </div>
 
@@ -423,13 +423,13 @@ export default function DashboardPage() {
                       onChange={(e) => setGenerateCount(parseInt(e.target.value))}
                       className={`border rounded-xl px-3 py-2.5 text-xs focus:outline-none cursor-pointer ${
                         isLight
-                          ? "bg-zinc-50 border-zinc-200 text-zinc-855"
+                          ? "bg-zinc-50 border-zinc-200 text-zinc-800"
                           : "bg-zinc-950/80 border-zinc-900 text-zinc-300"
                       }`}
                     >
-                      <option value="3">3 Variations</option>
-                      <option value="4">4 Variations</option>
-                      <option value="5">5 Variations</option>
+                      <option value="3" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>3 Variations</option>
+                      <option value="4" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>4 Variations</option>
+                      <option value="5" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>5 Variations</option>
                     </select>
                   </div>
                 </div>
@@ -445,13 +445,13 @@ export default function DashboardPage() {
                       onChange={(e) => setLength(e.target.value)}
                       className={`border rounded-xl px-3 py-2.5 text-xs focus:outline-none cursor-pointer ${
                         isLight
-                          ? "bg-zinc-50 border-zinc-200 text-zinc-855"
+                          ? "bg-zinc-50 border-zinc-200 text-zinc-800"
                           : "bg-zinc-950/80 border-zinc-900 text-zinc-300"
                       }`}
                     >
-                      <option value="short">Short (1-2 sentences)</option>
-                      <option value="medium">Medium (2-3 sentences)</option>
-                      <option value="long">Long (Detailed context)</option>
+                      <option value="short" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>Short (1-2 sentences)</option>
+                      <option value="medium" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>Medium (2-3 sentences)</option>
+                      <option value="long" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>Long (Detailed context)</option>
                     </select>
                   </div>
 
@@ -469,7 +469,7 @@ export default function DashboardPage() {
                         onChange={(e) => setTemperature(parseFloat(e.target.value))}
                         className="w-full h-1.5 bg-zinc-300 dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
                       />
-                      <span className={`text-xs font-bold w-8 text-right ${isLight ? "text-zinc-650" : "text-zinc-400"}`}>
+                      <span className={`text-xs font-bold w-8 text-right ${isLight ? "text-zinc-700" : "text-zinc-400"}`}>
                         {temperature}
                       </span>
                     </div>
@@ -498,7 +498,7 @@ export default function DashboardPage() {
                 <CardTitle className={`text-sm uppercase tracking-wide font-extrabold ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>
                   Generate Reply Responder
                 </CardTitle>
-                <CardDescription className={isLight ? "text-zinc-550" : "text-zinc-455"}>
+                <CardDescription className={isLight ? "text-zinc-500" : "text-zinc-500"}>
                   Reply to a user comment on your target post.
                 </CardDescription>
               </CardHeader>
@@ -520,13 +520,13 @@ export default function DashboardPage() {
                     onChange={(e) => setReplyStyle(e.target.value)}
                     className={`border rounded-xl px-3 py-2 text-xs focus:outline-none cursor-pointer flex-1 ${
                       isLight
-                        ? "bg-zinc-50 border-zinc-200 text-zinc-850"
+                        ? "bg-zinc-50 border-zinc-200 text-zinc-800"
                         : "bg-zinc-950/80 border-zinc-900 text-zinc-300"
                     }`}
                   >
-                    <option value="friendly">Friendly Reply</option>
-                    <option value="supportive">Supportive & Agreeing</option>
-                    <option value="challenging">Respectful Challenge</option>
+                    <option value="friendly" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>Friendly Reply</option>
+                    <option value="supportive" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>Supportive & Agreeing</option>
+                    <option value="challenging" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>Respectful Challenge</option>
                   </select>
                   <button
                     onClick={() => replyMutation.mutate()}
@@ -552,10 +552,10 @@ export default function DashboardPage() {
               }`}>
                 <MessageSquare className={`w-10 h-10 animate-bounce ${isLight ? "text-zinc-300" : "text-zinc-800"}`} />
                 <div>
-                  <p className={`text-sm font-bold ${isLight ? "text-zinc-600" : "text-zinc-550"}`}>
+                  <p className={`text-sm font-bold ${isLight ? "text-zinc-600" : "text-zinc-500"}`}>
                     Dashboard Workspace is Empty
                   </p>
-                  <p className={`text-xs mt-1 max-w-sm ${isLight ? "text-zinc-500" : "text-zinc-650"}`}>
+                  <p className={`text-xs mt-1 max-w-sm ${isLight ? "text-zinc-500" : "text-zinc-600"}`}>
                     Provide details in the generator panel on the left and hit generate to initiate AI comments.
                   </p>
                 </div>
@@ -568,7 +568,7 @@ export default function DashboardPage() {
                     <Card key={res.id || index} className={`border transition-all duration-300 relative overflow-hidden ${
                       isLight 
                         ? "bg-white border-zinc-200 hover:border-zinc-300 shadow-sm" 
-                        : "bg-zinc-950/60 border-zinc-850 hover:border-zinc-700 backdrop-blur-md"
+                        : "bg-zinc-950/60 border-zinc-800 hover:border-zinc-700 backdrop-blur-md"
                     }`}>
                       {/* Top Brand Color Border Strip */}
                       <div className={`h-1 w-full absolute top-0 left-0 right-0 ${cardPlatColors.bg}`} />

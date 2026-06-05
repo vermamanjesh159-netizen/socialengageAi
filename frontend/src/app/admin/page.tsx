@@ -86,7 +86,7 @@ export default function AdminPage() {
           <h1 className={`text-3xl font-extrabold tracking-tight ${isLight ? "text-zinc-900" : "text-white"}`}>
             Admin Console
           </h1>
-          <p className={`${isLight ? "text-zinc-550" : "text-zinc-400"} text-sm mt-1`}>
+          <p className={`${isLight ? "text-zinc-500" : "text-zinc-400"} text-sm mt-1`}>
             Supervise user registrations, adjust subscription states, and review platform MRR telemetry.
           </p>
         </div>
@@ -158,7 +158,7 @@ export default function AdminPage() {
                   <p className={`text-[10px] font-black uppercase tracking-wider ${isLight ? "text-zinc-450" : "text-zinc-400"}`}>
                     Ollama State
                   </p>
-                  <p className={`text-sm font-black mt-1 truncate max-w-[130px] ${isLight ? "text-zinc-850" : "text-white"}`}>
+                  <p className={`text-sm font-black mt-1 truncate max-w-[130px] ${isLight ? "text-zinc-800" : "text-white"}`}>
                     {stats?.health?.ollama_server || "Offline"} · {stats?.health?.ollama_default_model || "None"}
                   </p>
                 </div>
@@ -199,7 +199,7 @@ export default function AdminPage() {
                           : "border-zinc-900/60 hover:bg-zinc-950/40"
                       }`}>
                         <td className={`py-3.5 px-4 font-bold ${isLight ? "text-zinc-400" : "text-zinc-500"}`}>#{usr.id}</td>
-                        <td className={`py-3.5 px-4 font-black ${isLight ? "text-zinc-850" : "text-zinc-200"}`}>{usr.full_name || "N/A"}</td>
+                        <td className={`py-3.5 px-4 font-black ${isLight ? "text-zinc-800" : "text-zinc-200"}`}>{usr.full_name || "N/A"}</td>
                         <td className={`py-3.5 px-4 font-semibold ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>{usr.email}</td>
                         <td className="py-3.5 px-4">
                           <select
@@ -209,9 +209,9 @@ export default function AdminPage() {
                               isLight ? "bg-zinc-50 border-zinc-200" : "bg-zinc-950 border-zinc-900"
                             }`}
                           >
-                            <option value="Free">Free</option>
-                            <option value="Pro">Pro</option>
-                            <option value="Business">Business</option>
+                            <option value="Free" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>Free</option>
+                            <option value="Pro" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>Pro</option>
+                            <option value="Business" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>Business</option>
                           </select>
                         </td>
                         <td className={`py-3.5 px-4 font-extrabold ${isLight ? "text-zinc-700" : "text-zinc-300"}`}>
@@ -228,7 +228,7 @@ export default function AdminPage() {
                               className={`p-1.5 border rounded-lg transition-colors cursor-pointer ${
                                 isLight
                                   ? "bg-zinc-50 hover:bg-zinc-100 border-zinc-200 text-zinc-500 hover:text-rose-500"
-                                  : "bg-zinc-950 hover:bg-zinc-900 border-zinc-900 text-zinc-550 hover:text-rose-400"
+                                  : "bg-zinc-950 hover:bg-zinc-900 border-zinc-900 text-zinc-500 hover:text-rose-400"
                               }`}
                             >
                               <Trash2 className="w-3.5 h-3.5" />

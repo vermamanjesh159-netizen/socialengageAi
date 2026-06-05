@@ -194,7 +194,7 @@ export default function HistoryPage() {
             <h1 className={`text-3xl font-extrabold tracking-tight ${isLight ? "text-zinc-900" : "text-white"}`}>
               History Log & Audits
             </h1>
-            <p className={`${isLight ? "text-zinc-550" : "text-zinc-400"} text-sm mt-1`}>
+            <p className={`${isLight ? "text-zinc-500" : "text-zinc-400"} text-sm mt-1`}>
               Review, filter, and export all generated comments, replies, and quality metrics.
             </p>
           </div>
@@ -234,7 +234,7 @@ export default function HistoryPage() {
                   className={`w-full border rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none ${
                     isLight 
                       ? "bg-zinc-50 border-zinc-200 text-zinc-900 placeholder-zinc-400 focus:border-zinc-300 focus:bg-white"
-                      : "bg-zinc-950 border-zinc-900 text-zinc-100 placeholder-zinc-700 focus:border-zinc-750"
+                      : "bg-zinc-950 border-zinc-900 text-zinc-100 placeholder-zinc-700 focus:border-zinc-700"
                   }`}
                 />
               </div>
@@ -244,13 +244,13 @@ export default function HistoryPage() {
                 onChange={(e) => setPlatform(e.target.value)}
                 className={`border rounded-xl px-4 py-2.5 text-sm focus:outline-none cursor-pointer ${
                   isLight
-                    ? "bg-zinc-50 border-zinc-200 text-zinc-650"
+                    ? "bg-zinc-50 border-zinc-200 text-zinc-800"
                     : "bg-zinc-950 border-zinc-900 text-zinc-400 focus:border-zinc-700"
                 }`}
               >
-                <option value="">All Platforms</option>
+                <option value="" className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>All Platforms</option>
                 {platforms.map((p) => (
-                  <option key={p} value={p}>{p}</option>
+                  <option key={p} value={p} className={isLight ? "text-zinc-900 bg-white" : "text-zinc-300 bg-zinc-950"}>{p}</option>
                 ))}
               </select>
             </div>
@@ -265,10 +265,10 @@ export default function HistoryPage() {
             <div className={`border border-dashed py-24 text-center rounded-2xl flex flex-col items-center justify-center gap-3 ${
               isLight ? "border-zinc-200 bg-zinc-100/30" : "border-zinc-900 bg-zinc-950/10"
             }`}>
-              <Clock className={`w-9 h-9 ${isLight ? "text-zinc-350" : "text-zinc-800"}`} />
+              <Clock className={`w-9 h-9 ${isLight ? "text-zinc-400" : "text-zinc-800"}`} />
               <div>
-                <p className={`text-sm font-bold ${isLight ? "text-zinc-650" : "text-zinc-400"}`}>No Logs Recorded</p>
-                <p className={`text-xs mt-1 ${isLight ? "text-zinc-500" : "text-zinc-650"}`}>
+                <p className={`text-sm font-bold ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>No Logs Recorded</p>
+                <p className={`text-xs mt-1 ${isLight ? "text-zinc-500" : "text-zinc-600"}`}>
                   Generate new comments or replies in the dashboard workspace to populate this audit table.
                 </p>
               </div>
@@ -305,7 +305,7 @@ export default function HistoryPage() {
                               {log.style} Tone
                             </span>
                             <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border ${
-                              isLight ? "bg-zinc-50 border-zinc-200 text-zinc-500" : "bg-zinc-900 border-zinc-800 text-zinc-550"
+                              isLight ? "bg-zinc-50 border-zinc-200 text-zinc-500" : "bg-zinc-900 border-zinc-800 text-zinc-500"
                             }`}>
                               {log.comment_type}
                             </span>

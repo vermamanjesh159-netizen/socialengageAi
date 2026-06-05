@@ -100,7 +100,7 @@ export default function OllamaHubPage() {
             <h1 className={`text-3xl font-extrabold tracking-tight ${isLight ? "text-zinc-900" : "text-white"}`}>
               Ollama & LLM Local Hub
             </h1>
-            <p className={`${isLight ? "text-zinc-550" : "text-zinc-400"} text-sm mt-1`}>
+            <p className={`${isLight ? "text-zinc-500" : "text-zinc-400"} text-sm mt-1`}>
               Manage local open-source LLM instances, monitor server status, and configure Groq Cloud API connections.
             </p>
           </div>
@@ -159,7 +159,7 @@ export default function OllamaHubPage() {
                 <p className={`text-[10px] font-bold uppercase tracking-wider ${isLight ? "text-zinc-400" : "text-zinc-500"}`}>
                   Ollama Default Model
                 </p>
-                <p className={`text-sm font-black mt-1 truncate max-w-[180px] ${isLight ? "text-zinc-850" : "text-white"}`}>
+                <p className={`text-sm font-black mt-1 truncate max-w-[180px] ${isLight ? "text-zinc-800" : "text-white"}`}>
                   {statusData?.default_model || "None Selected"}
                 </p>
               </div>
@@ -280,7 +280,7 @@ export default function OllamaHubPage() {
               <div className="h-32 bg-zinc-900/40 rounded-2xl animate-pulse" />
             ) : !statusData?.models || statusData.models.length === 0 ? (
               <div className={`border border-dashed py-24 text-center rounded-2xl flex flex-col items-center justify-center gap-2 ${
-                isLight ? "border-zinc-200 bg-zinc-100/30 text-zinc-400" : "border-zinc-900 bg-zinc-950/10 text-zinc-550"
+                isLight ? "border-zinc-200 bg-zinc-100/30 text-zinc-400" : "border-zinc-900 bg-zinc-950/10 text-zinc-500"
               }`}>
                 <Cpu className={`w-9 h-9 ${isLight ? "text-zinc-350" : "text-zinc-800"}`} />
                 <span className="text-xs font-semibold uppercase">No models downloaded yet. Pull a library tag to begin.</span>

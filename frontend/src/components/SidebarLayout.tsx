@@ -54,9 +54,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
     { name: "Ollama Hub", href: "/ollama", icon: Cpu },
   ];
 
-  if (user?.is_admin) {
-    links.push({ name: "Admin Panel", href: "/admin", icon: ShieldCheck });
-  }
+
 
   const getPlanBadgeStyle = (plan: string) => {
     switch (plan?.toLowerCase()) {
@@ -65,7 +63,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
       case "business":
         return "bg-violet-500/10 border-violet-500/30 text-violet-500 dark:text-violet-300 font-bold";
       default:
-        return theme === "light" ? "bg-zinc-100 border-zinc-200 text-zinc-650" : "bg-zinc-900 border-zinc-800 text-zinc-400";
+        return theme === "light" ? "bg-zinc-100 border-zinc-200 text-zinc-600" : "bg-zinc-900 border-zinc-800 text-zinc-400";
     }
   };
 
@@ -85,7 +83,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
 
       {/* Mobile Header Banner */}
       <header className={`md:hidden flex items-center justify-between px-6 py-4 border-b z-40 transition-colors duration-300 relative ${
-        isLight ? "bg-white/95 border-zinc-200 text-zinc-900 backdrop-blur-md" : "bg-zinc-900 border-zinc-850 text-white"
+        isLight ? "bg-white/95 border-zinc-200 text-zinc-900 backdrop-blur-md" : "bg-zinc-900 border-zinc-800 text-white"
       }`}>
         <Link href="/dashboard" className="flex items-center gap-2">
           <Zap className="w-6 h-6 text-indigo-500 fill-indigo-500/20" />
@@ -105,7 +103,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
           </button>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`p-1 rounded-lg transition-colors cursor-pointer ${isLight ? "hover:bg-zinc-100 text-zinc-650 hover:text-zinc-900" : "hover:bg-zinc-800 text-zinc-400 hover:text-white"}`}
+            className={`p-1 rounded-lg transition-colors cursor-pointer ${isLight ? "hover:bg-zinc-100 text-zinc-600 hover:text-zinc-900" : "hover:bg-zinc-800 text-zinc-400 hover:text-white"}`}
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -134,7 +132,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
               className={`hidden md:block p-2 rounded-xl border transition-all cursor-pointer ${
                 isLight 
                   ? "bg-zinc-50 border-zinc-200 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950" 
-                  : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:bg-zinc-850 hover:text-white"
+                  : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:text-white"
               }`}
               title={isLight ? "Switch to Dark Mode" : "Switch to Light Mode"}
             >
@@ -158,11 +156,11 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
                         ? "bg-zinc-100 text-zinc-950 shadow-sm border border-zinc-200"
                         : "bg-zinc-900 text-white shadow-lg border border-zinc-800/60"
                       : isLight
-                      ? "text-zinc-650 hover:text-zinc-950 hover:bg-zinc-100/50"
+                      ? "text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100/50"
                       : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/30"
                   }`}
                 >
-                  <Icon className={`w-5 h-5 ${isActive ? "text-indigo-550 dark:text-indigo-400" : isLight ? "text-zinc-500" : "text-zinc-400"}`} />
+                  <Icon className={`w-5 h-5 ${isActive ? "text-indigo-500 dark:text-indigo-400" : isLight ? "text-zinc-500" : "text-zinc-400"}`} />
                   {link.name}
                 </Link>
               );
@@ -186,20 +184,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
               </span>
             </div>
           </div>
-          <button
-            onClick={() => {
-              logout();
-              router.push("/login");
-            }}
-            className={`flex items-center gap-3 w-full px-4 py-3 text-sm font-semibold rounded-xl cursor-pointer transition-all duration-200 ${
-              isLight 
-                ? "text-zinc-650 hover:text-zinc-950 hover:bg-zinc-100/50" 
-                : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50"
-            }`}
-          >
-            <LogOut className="w-5 h-5" />
-            Sign Out
-          </button>
+
         </div>
       </aside>
 
@@ -234,7 +219,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
           <div 
             className={`w-full max-w-xl rounded-2xl border p-6 shadow-2xl relative max-h-[85vh] overflow-y-auto ${
               isLight 
-                ? "bg-white border-zinc-200 text-zinc-850" 
+                ? "bg-white border-zinc-200 text-zinc-800" 
                 : "bg-zinc-950 border-zinc-900 text-zinc-100"
             }`}
           >
@@ -244,7 +229,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
               className={`absolute top-4 right-4 p-1.5 rounded-xl border transition-colors cursor-pointer ${
                 isLight
                   ? "bg-zinc-50 border-zinc-200 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900"
-                  : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:bg-zinc-850 hover:text-white"
+                  : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:text-white"
               }`}
             >
               <X className="w-4 h-4" />
@@ -269,7 +254,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
                 <h4 className="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2 mb-1">
                   💬 AI Comments & Engagement
                 </h4>
-                <p className={`text-xs leading-relaxed ${isLight ? "text-zinc-650" : "text-zinc-400"}`}>
+                <p className={`text-xs leading-relaxed ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>
                   Generates authentic, contextual comments matching a post or thread text. Choose between friendly, professional, expert, or contrarian tone styles. Includes real-time validation for platform rules.
                 </p>
               </div>
@@ -278,7 +263,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
                 <h4 className="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2 mb-1">
                   📝 Catchy Captions
                 </h4>
-                <p className={`text-xs leading-relaxed ${isLight ? "text-zinc-655" : "text-zinc-400"}`}>
+                <p className={`text-xs leading-relaxed ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>
                   Crafts engaging, punchy social media post captions from your topic ideas or article outlines. Automatically formats the body copy with platform-fit emojis and brand spacing.
                 </p>
               </div>
@@ -287,7 +272,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
                 <h4 className="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2 mb-1">
                   👤 Professional Bios
                 </h4>
-                <p className={`text-xs leading-relaxed ${isLight ? "text-zinc-655" : "text-zinc-400"}`}>
+                <p className={`text-xs leading-relaxed ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>
                   Generates profile summaries, bios, and elevator pitches based on your career achievements. Tailored to represent you professionally on networks like LinkedIn or X/Twitter.
                 </p>
               </div>
@@ -296,7 +281,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
                 <h4 className="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2 mb-1">
                   #️⃣ Hashtags Pack
                 </h4>
-                <p className={`text-xs leading-relaxed ${isLight ? "text-zinc-655" : "text-zinc-400"}`}>
+                <p className={`text-xs leading-relaxed ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>
                   Extracts and targets relevant keywords from your post contents to output a copy-pasteable pack of 5 to 12 hashtags, optimizing your organic reach.
                 </p>
               </div>
@@ -305,7 +290,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
                 <h4 className="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2 mb-1">
                   🛡️ Quality Telemetry scorecard
                 </h4>
-                <ul className={`text-xs list-disc pl-5 flex flex-col gap-1.5 ${isLight ? "text-zinc-655" : "text-zinc-400"}`}>
+                <ul className={`text-xs list-disc pl-5 flex flex-col gap-1.5 ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>
                   <li>
                     <strong>Human Likeness:</strong> Rating how natural the generated phrasing is, avoiding generic AI boilerplate flags.
                   </li>
@@ -322,7 +307,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
                 <h4 className="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2 mb-1">
                   💻 Privacy & Ollama LLMs
                 </h4>
-                <p className={`text-xs leading-relaxed ${isLight ? "text-zinc-655" : "text-zinc-400"}`}>
+                <p className={`text-xs leading-relaxed ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>
                   Every generation runs locally on your machine via <strong>Ollama</strong>. None of your inputs or target profiles are uploaded to external servers, keeping your digital footprint 100% private.
                 </p>
               </div>
