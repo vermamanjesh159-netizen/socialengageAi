@@ -1,23 +1,22 @@
 # 🚀 Deployment Guide: SocialEngage AI
 
 This project is structured as a monorepo containing:
-* `/backend`: FastAPI service + PostgreSQL + Redis
+* `/backend`: FastAPI service + SQLite + Redis
 * `/frontend`: Next.js Web App
 
 ---
 
 ## 1. Backend Deployment (Render)
 
-We have configured a `render.yaml` Blueprint specification. To deploy the entire backend stack (API service + Database + Redis):
+We have configured a `render.yaml` Blueprint specification. To deploy the backend stack (FastAPI API service + Redis):
 
 1. Commit and push the repository to your GitHub account.
 2. Go to your **[Render Dashboard](https://dashboard.render.com)**.
 3. Click **New +** and select **Blueprint**.
 4. Connect this GitHub repository.
 5. Render will automatically detect `render.yaml` and configure:
-   * **`socialengage-db`** (PostgreSQL Database)
    * **`socialengage-redis`** (Redis instance)
-   * **`socialengage-backend`** (FastAPI Web Service)
+   * **`socialengage-backend`** (FastAPI Web Service running SQLite locally)
 6. During creation, Render will prompt you to fill in the **`GROQ_API_KEY`** environment variable (you can enter your key or leave it empty to default to Ollama).
 7. Click **Approve** to build and spin up the backend.
 
