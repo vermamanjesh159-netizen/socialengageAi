@@ -12,6 +12,17 @@ export interface User {
   is_admin: boolean;
 }
 
+export const DEFAULT_GUEST_USER: User = {
+  id: 1,
+  email: "guest@socialengage.ai",
+  full_name: "Local User",
+  plan: "Unlimited",
+  comments_used_this_month: 0,
+  is_active: true,
+  is_verified: true,
+  is_admin: true
+};
+
 interface AuthState {
   user: User | null;
   loading: boolean;
@@ -24,7 +35,7 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
-  user: null,
+  user: DEFAULT_GUEST_USER,
   loading: true,
   isInitialized: false,
   setUser: (user) => set({ user }),
@@ -36,12 +47,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const resp = await api.get("/users/me");
       set({ user: resp.data, loading: false });
     } catch (err) {
-      get().logout();
+      set({ user: DEFAULT_GUEST_USER, loading: false });
     }
   },
   logout: () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
+    set({ user: DEFAULT_GUEST_USER, loading: false });
     if (typeof window !== "undefined") {
       window.location.href = "/dashboard";
     }
@@ -51,7 +63,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const resp = await api.get("/users/me");
       set({ user: resp.data, loading: false, isInitialized: true });
     } catch (err) {
-      set({ user: null, loading: false, isInitialized: true });
+      set({ user: DEFAULT_GUEST_USER, loading: false, isInitialized: true });
     }
   },
   updateUser: async (userData) => {

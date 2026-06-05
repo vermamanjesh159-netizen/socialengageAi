@@ -31,12 +31,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
     checkAuth();
   }, [checkAuth]);
 
-  // Protect route
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push("/login");
-    }
-  }, [user, loading, router]);
+
 
   if (loading) {
     return (
@@ -59,7 +54,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
     { name: "Ollama Hub", href: "/ollama", icon: Cpu },
   ];
 
-  if (user.is_admin) {
+  if (user?.is_admin) {
     links.push({ name: "Admin Panel", href: "/admin", icon: ShieldCheck });
   }
 
@@ -179,15 +174,15 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
         <div className={`flex flex-col gap-4 border-t pt-6 ${isLight ? "border-zinc-100" : "border-zinc-900"}`}>
           <div className="flex items-center gap-3 px-3">
             <div className="w-10 h-10 rounded-full bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center font-extrabold text-indigo-600 dark:text-indigo-400 uppercase shadow-md shadow-indigo-500/5">
-              {user.email.substring(0, 2)}
+              {user?.email ? user.email.substring(0, 2) : "US"}
             </div>
             <div className="flex-1 min-w-0">
               <p className={`text-sm font-bold truncate ${isLight ? "text-zinc-900" : "text-white"}`}>
-                {user.full_name || "Active User"}
+                {user?.full_name || "Active User"}
               </p>
-              <p className={`text-xs truncate mb-1 ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>{user.email}</p>
-              <span className={`inline-flex items-center text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-full border ${getPlanBadgeStyle(user.plan)}`}>
-                {user.plan} Plan
+              <p className={`text-xs truncate mb-1 ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>{user?.email || ""}</p>
+              <span className={`inline-flex items-center text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-full border ${getPlanBadgeStyle(user?.plan || "Free")}`}>
+                {user?.plan || "Free"} Plan
               </span>
             </div>
           </div>
