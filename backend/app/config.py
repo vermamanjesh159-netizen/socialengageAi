@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 1440
     
     # Databases & Caches
-    DATABASE_URL: str = "postgresql://postgres:postgrespassword@localhost:5432/socialengage"
+    DATABASE_URL: str = "sqlite:///./socialengage.db"
     REDIS_URL: str = "redis://localhost:6379/0"
     CELERY_BROKER_URL: str = "redis://localhost:6379/0"
     CELERY_RESULT_BACKEND: str = "redis://localhost:6379/0"
