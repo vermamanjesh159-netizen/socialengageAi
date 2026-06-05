@@ -59,24 +59,7 @@ async def log_requests_and_handle_errors(request: Request, call_next):
             content={"detail": f"An internal server error occurred: {str(e)}"}
         )
 
-# Simple Rate Limiter Middleware simulation
-IP_REQUESTS = {}
-RATE_LIMIT_MAX = 200 # requests per minute
-@app.middleware("http")
-async def rate_limiting_middleware(request: Request, call_next):
-    client_ip = request.client.host
-    current_time = int(time.time())
-    
-    IP_REQUESTS[client_ip] = [t for t in IP_REQUESTS.get(client_ip, []) if current_time - t < 60]
-    
-    if len(IP_REQUESTS[client_ip]) >= RATE_LIMIT_MAX:
-        return JSONResponse(
-            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-            content={"detail": "Too many requests. Rate limit exceeded."}
-        )
-        
-    IP_REQUESTS[client_ip].append(current_time)
-    return await call_next(request)
+
 
 # 6. Include Routers
 app.include_router(auth.router, prefix=settings.API_V1_STR)

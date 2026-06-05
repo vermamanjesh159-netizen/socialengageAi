@@ -13,26 +13,24 @@ reusable_oauth2 = OAuth2PasswordBearer(
 )
 
 def get_current_user(
-    db: Session = Depends(get_db),
-    token: str = Depends(reusable_oauth2)
+    db: Session = Depends(get_db)
 ) -> User:
-    try:
-        payload = jwt.decode(
-            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+    # Always return a default active administrator user in local/free mode
+    default_user = db.query(User).filter(User.email == "admin@socialengage.ai").first()
+    if not default_user:
+        default_user = User(
+            email="admin@socialengage.ai",
+            hashed_password="local_bypass_hashed_password_placeholder",
+            full_name="Default User",
+            is_active=True,
+            is_admin=True,
+            plan="Unlimited",
+            comments_used_this_month=0
         )
-        token_data = TokenPayload(**payload)
-    except (JWTError, Exception):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Could not validate credentials",
-        )
-    user = db.query(User).filter(User.id == token_data.sub).first()
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
-        )
-    return user
+        db.add(default_user)
+        db.commit()
+        db.refresh(default_user)
+    return default_user
 
 def get_current_active_user(
     current_user: User = Depends(get_current_user),

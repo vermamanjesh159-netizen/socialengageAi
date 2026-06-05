@@ -42,23 +42,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   logout: () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
-    set({ user: null, loading: false });
     if (typeof window !== "undefined") {
-      window.location.href = "/login";
+      window.location.href = "/dashboard";
     }
   },
   checkAuth: async () => {
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      set({ user: null, loading: false, isInitialized: true });
-      return;
-    }
     try {
       const resp = await api.get("/users/me");
       set({ user: resp.data, loading: false, isInitialized: true });
     } catch (err) {
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
       set({ user: null, loading: false, isInitialized: true });
     }
   },
