@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SocialEngage AI | Local LLM Social Media Engagement SaaS",
-  description: "Automate and personalize your social media comments and replies with local Ollama LLMs across LinkedIn, Twitter/X, Reddit, Instagram, and more.",
+  title: "AI Content Generator | Local LLM Content Generation SaaS",
+  description: "Automate and personalize your social media comments, articles, emails, marketing copy and more using local Ollama LLMs.",
 };
 
 export default function RootLayout({

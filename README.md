@@ -1,6 +1,6 @@
-# SocialEngage AI 🚀
+# AI Content Generator 🚀
 
-SocialEngage AI is a frictionless, privacy-first social media engagement utility designed to help professionals and brands craft authentic comments, captions, bios, and hashtags instantly. 
+AI Content Generator is a frictionless, privacy-first content creation utility designed to help professionals and brands craft blog posts, social media updates, marketing copy, emails, product descriptions, video scripts, comments, captions, bios, and hashtags instantly. 
 
 Powered by **local open-source LLMs (via Ollama)** and **cloud-based inference (via Groq)**, the platform evaluates every generation with a proprietary **Quality Telemetry Scorecard** to ensure human likeness and brand consistency.
 
@@ -101,7 +101,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 
 ## Health & Telemetry Endpoints
 
-SocialEngage AI includes self-monitoring and readiness health check endpoints for production setups:
+AI Content Generator includes self-monitoring and readiness health check endpoints for production setups:
 
 - **Shallow Health check**: `GET http://localhost:8000/health`
   - *Returns SQL database connection state.*

@@ -1,4 +1,4 @@
-# 🚀 Deployment Guide: SocialEngage AI
+# 🚀 Deployment Guide: AI Content Generator
 
 This project is structured as a monorepo containing:
 * `/backend`: FastAPI service + SQLite + Redis

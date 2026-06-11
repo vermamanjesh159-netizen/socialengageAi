@@ -9,6 +9,8 @@ class OllamaService:
     def __init__(self, ollama_url: Optional[str] = None):
         self.ollama_url = ollama_url or settings.OLLAMA_URL
         self._default_model = settings.DEFAULT_OLLAMA_MODEL
+        self._cached_available = None
+        self._last_checked = 0
 
     def get_default_model(self) -> str:
         return self._default_model
@@ -17,18 +19,27 @@ class OllamaService:
         self._default_model = model_name
 
     def is_available(self) -> bool:
-        """Check if Ollama service is running"""
+        """Check if Ollama service is running (cached for 10 seconds to optimize latency and logs)"""
+        import time
+        now = time.time()
+        if self._cached_available is not None and (now - self._last_checked) < 10:
+            return self._cached_available
+            
         try:
-            response = requests.get(f"{self.ollama_url}/api/tags", timeout=5)
-            return response.status_code == 200
-        except Exception as e:
-            logger.warning(f"Ollama server is unavailable at {self.ollama_url}: {e}")
-            return False
+            response = requests.get(f"{self.ollama_url}/api/tags", timeout=2)
+            self._cached_available = response.status_code == 200
+        except Exception:
+            self._cached_available = False
+            
+        self._last_checked = now
+        return self._cached_available
 
     def check_model_availability(self, model_name: str) -> bool:
         """Check if a specific model is available locally"""
+        if not self.is_available():
+            return False
         try:
-            response = requests.get(f"{self.ollama_url}/api/tags", timeout=5)
+            response = requests.get(f"{self.ollama_url}/api/tags", timeout=2)
             if response.status_code == 200:
                 models = response.json().get("models", [])
                 return any(model.get("name") == model_name or model.get("name") == f"{model_name}:latest" for model in models)
@@ -38,8 +49,10 @@ class OllamaService:
 
     def list_models(self) -> List[Dict[str, Any]]:
         """List local models with metadata"""
+        if not self.is_available():
+            return []
         try:
-            response = requests.get(f"{self.ollama_url}/api/tags", timeout=5)
+            response = requests.get(f"{self.ollama_url}/api/tags", timeout=2)
             if response.status_code == 200:
                 raw_models = response.json().get("models", [])
                 models = []
@@ -65,6 +78,9 @@ class OllamaService:
 
     def pull_model(self, model_name: str) -> bool:
         """Pull a model from the Ollama library"""
+        if not self.is_available():
+            logger.error("Ollama server is unavailable. Cannot pull model.")
+            return False
         try:
             logger.info(f"Pulling model: {model_name}")
             response = requests.post(
@@ -79,6 +95,9 @@ class OllamaService:
 
     def delete_model(self, model_name: str) -> bool:
         """Delete a local model"""
+        if not self.is_available():
+            logger.error("Ollama server is unavailable. Cannot delete model.")
+            return False
         try:
             logger.info(f"Deleting model: {model_name}")
             response = requests.delete(

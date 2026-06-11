@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { SidebarLayout } from "../../components/SidebarLayout";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button, Input } from "../../components/ui";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -8,6 +8,12 @@ import { api } from "../../lib/api";
 import { useToastStore } from "../../store/toast";
 import { useThemeStore } from "../../store/theme";
 import { Cpu, CheckCircle2, XCircle, Trash2, Download, AlertTriangle, RefreshCw, Key } from "lucide-react";
+
+interface OllamaModel {
+  name: string;
+  size?: number;
+  parameters?: string;
+}
 
 export default function OllamaHubPage() {
   const addToast = useToastStore((state) => state.addToast);
@@ -17,7 +23,6 @@ export default function OllamaHubPage() {
 
   // Model to pull state
   const [modelToPull, setModelToPull] = useState("");
-  const [groqKey, setGroqKey] = useState("");
 
   // Load Status & Models list
   const { data: statusData, isLoading, refetch } = useQuery({
@@ -37,13 +42,6 @@ export default function OllamaHubPage() {
     }
   });
 
-  // Pre-fill Groq key input on query success
-  useEffect(() => {
-    if (groqData?.key) {
-      setGroqKey(groqData.key);
-    }
-  }, [groqData]);
-
   // Pull Model Mutation
   const pullMutation = useMutation({
     mutationFn: async () => {
@@ -55,8 +53,9 @@ export default function OllamaHubPage() {
       setModelToPull("");
       addToast(`Model pulled successfully!`, "success");
     },
-    onError: (err: any) => {
-      const msg = err.response?.data?.detail || "Pulling model failed. Verify network connection.";
+    onError: (err: unknown) => {
+      const apiErr = err as { response?: { data?: { detail?: string } } };
+      const msg = apiErr.response?.data?.detail || "Pulling model failed. Verify network connection.";
       addToast(msg, "error");
     }
   });
@@ -111,7 +110,7 @@ export default function OllamaHubPage() {
             }}
             variant="outline"
             className={`font-bold flex items-center gap-2 ${
-              isLight ? "bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-55" : "border-zinc-800 bg-zinc-950/40"
+              isLight ? "bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-100" : "border-zinc-800 bg-zinc-950/40"
             }`}
           >
             <RefreshCw className="w-4 h-4" /> Refresh Connection
@@ -240,14 +239,14 @@ export default function OllamaHubPage() {
             }`}>
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <Key className="w-5 h-5 text-indigo-550 dark:text-indigo-400" /> Groq Cloud Integration
+                  <Key className="w-5 h-5 text-indigo-600 dark:text-indigo-400" /> Groq Cloud Integration
                 </CardTitle>
                 <CardDescription className={isLight ? "text-zinc-500" : "text-zinc-400"}>
                   Groq Cloud completions connection status and configuration.
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1.5 p-4 border rounded-xl bg-zinc-950/20 dark:bg-zinc-950/40 border-zinc-250/60 dark:border-zinc-900/60">
+                <div className="flex flex-col gap-1.5 p-4 border rounded-xl bg-zinc-950/20 dark:bg-zinc-950/40 border-zinc-200/60 dark:border-zinc-900/60">
                   <span className={`text-[10px] font-extrabold uppercase tracking-wider ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>
                     Active API Key Configuration
                   </span>
@@ -263,7 +262,7 @@ export default function OllamaHubPage() {
                 }`}>
                   <AlertTriangle className="w-4 h-4 text-indigo-500 shrink-0" />
                   <span>
-                    For security reasons, the Groq API key is read-only on the dashboard and must be configured via the server's `.env` environment file.
+                    For security reasons, the Groq API key is read-only on the dashboard and must be configured via the server&apos;s `.env` environment file.
                   </span>
                 </div>
               </CardContent>
@@ -282,12 +281,12 @@ export default function OllamaHubPage() {
               <div className={`border border-dashed py-24 text-center rounded-2xl flex flex-col items-center justify-center gap-2 ${
                 isLight ? "border-zinc-200 bg-zinc-100/30 text-zinc-400" : "border-zinc-900 bg-zinc-950/10 text-zinc-500"
               }`}>
-                <Cpu className={`w-9 h-9 ${isLight ? "text-zinc-350" : "text-zinc-800"}`} />
+                <Cpu className={`w-9 h-9 ${isLight ? "text-zinc-300" : "text-zinc-800"}`} />
                 <span className="text-xs font-semibold uppercase">No models downloaded yet. Pull a library tag to begin.</span>
               </div>
             ) : (
               <div className="flex flex-col gap-4">
-                {statusData.models.map((modelObj: any) => {
+                {statusData.models.map((modelObj: OllamaModel) => {
                   const isDefault = statusData.default_model === modelObj.name;
                   const formattedSize = modelObj.size
                     ? `${(modelObj.size / (1024 * 1024 * 1024)).toFixed(2)} GB`
@@ -304,10 +303,10 @@ export default function OllamaHubPage() {
                     }`}>
                       <CardContent className="p-4 flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
-                          <Cpu className={`w-5 h-5 ${isDefault ? "text-indigo-500 dark:text-indigo-400" : isLight ? "text-zinc-450" : "text-zinc-500"}`} />
+                          <Cpu className={`w-5 h-5 ${isDefault ? "text-indigo-500 dark:text-indigo-400" : isLight ? "text-zinc-400" : "text-zinc-500"}`} />
                           <div>
                             <p className={`text-sm font-bold ${isLight ? "text-zinc-800" : "text-white"}`}>{modelObj.name}</p>
-                            <p className={`text-[10px] font-semibold uppercase ${isLight ? "text-zinc-450" : "text-zinc-555"}`}>
+                            <p className={`text-[10px] font-semibold uppercase ${isLight ? "text-zinc-400" : "text-zinc-500"}`}>
                               {formattedSize} · params: {modelObj.parameters}
                             </p>
                           </div>

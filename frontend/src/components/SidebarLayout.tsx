@@ -7,7 +7,6 @@ import { useAuthStore } from "../store/auth";
 import { useThemeStore } from "../store/theme";
 import { 
   LayoutDashboard, 
-  ShieldCheck, 
   LogOut, 
   Menu, 
   X,
@@ -16,7 +15,8 @@ import {
   Cpu,
   Sun,
   Moon,
-  Info
+  Info,
+  CreditCard
 } from "lucide-react";
 
 export function SidebarLayout({ children }: { children: React.ReactNode }) {
@@ -26,6 +26,9 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
+
+  const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
+  const isGuest = !token || user?.email === "guest@aicontentgenerator.ai" || user?.email === "guest@socialengage.ai" || user?.email === "admin@aicontentgenerator.ai";
 
   useEffect(() => {
     checkAuth();
@@ -50,8 +53,10 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
 
   const links = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    { name: "Playground", href: "/playground", icon: Zap },
     { name: "History Log", href: "/history", icon: History },
     { name: "Ollama Hub", href: "/ollama", icon: Cpu },
+    { name: "Pricing Plans", href: "/plans", icon: CreditCard },
   ];
 
 
@@ -60,6 +65,8 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
     switch (plan?.toLowerCase()) {
       case "pro":
         return "bg-indigo-500/10 border-indigo-500/30 text-indigo-500 dark:text-indigo-300";
+      case "go":
+        return "bg-purple-500/10 border-purple-500/30 text-purple-550 dark:text-purple-300 font-bold";
       case "business":
         return "bg-violet-500/10 border-violet-500/30 text-violet-500 dark:text-violet-300 font-bold";
       default:
@@ -88,7 +95,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
         <Link href="/dashboard" className="flex items-center gap-2">
           <Zap className="w-6 h-6 text-indigo-500 fill-indigo-500/20" />
           <span className={`font-extrabold tracking-tight ${isLight ? "text-zinc-900" : "text-white"}`}>
-            SocialEngage <span className="text-indigo-500">AI</span>
+            AI Content <span className="text-indigo-500">Generator</span>
           </span>
         </Link>
         <div className="flex items-center gap-3">
@@ -122,7 +129,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
             <Link href="/dashboard" className="flex items-center gap-2.5">
               <Zap className="w-7 h-7 text-indigo-500 fill-indigo-500/20" />
               <span className={`font-extrabold text-xl tracking-tight ${isLight ? "text-zinc-900" : "text-white"}`}>
-                SocialEngage <span className="text-indigo-500">AI</span>
+                AI Content <span className="text-indigo-500">Generator</span>
               </span>
             </Link>
             
@@ -170,21 +177,58 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
 
         {/* Footer User Card */}
         <div className={`flex flex-col gap-4 border-t pt-6 ${isLight ? "border-zinc-100" : "border-zinc-900"}`}>
-          <div className="flex items-center gap-3 px-3">
-            <div className="w-10 h-10 rounded-full bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center font-extrabold text-indigo-600 dark:text-indigo-400 uppercase shadow-md shadow-indigo-500/5">
-              {user?.email ? user.email.substring(0, 2) : "US"}
+          {isGuest ? (
+            <div className="flex flex-col gap-3 px-2">
+              <div className="flex items-center gap-3 px-1">
+                <div className="w-10 h-10 rounded-full bg-zinc-500/10 border border-zinc-500/30 flex items-center justify-center font-extrabold text-zinc-500 dark:text-zinc-400 uppercase shadow-md">
+                  GU
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className={`text-sm font-bold truncate ${isLight ? "text-zinc-900" : "text-white"}`}>
+                    Guest Workspace
+                  </p>
+                  <p className={`text-xs truncate mb-1 ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>
+                    Local Mode
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => router.push("/login")}
+                className="w-full py-2.5 border rounded-xl text-xs font-black tracking-wide uppercase flex items-center justify-center gap-2 cursor-pointer transition-all bg-indigo-600 hover:bg-indigo-550 text-white border-transparent shadow-md hover:shadow-indigo-500/10"
+              >
+                <Zap className="w-3.5 h-3.5" />
+                Sign In / Sign Up
+              </button>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className={`text-sm font-bold truncate ${isLight ? "text-zinc-900" : "text-white"}`}>
-                {user?.full_name || "Active User"}
-              </p>
-              <p className={`text-xs truncate mb-1 ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>{user?.email || ""}</p>
-              <span className={`inline-flex items-center text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-full border ${getPlanBadgeStyle(user?.plan || "Free")}`}>
-                {user?.plan || "Free"} Plan
-              </span>
+          ) : (
+            <div className="flex flex-col gap-3 px-2">
+              <div className="flex items-center gap-3 px-1">
+                <div className="w-10 h-10 rounded-full bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center font-extrabold text-indigo-600 dark:text-indigo-400 uppercase shadow-md shadow-indigo-500/5">
+                  {user?.email ? user.email.substring(0, 2) : "US"}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className={`text-sm font-bold truncate ${isLight ? "text-zinc-900" : "text-white"}`}>
+                    {user?.full_name || "Active User"}
+                  </p>
+                  <p className={`text-xs truncate mb-1 ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>{user?.email || ""}</p>
+                  <span className={`inline-flex items-center text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-full border ${getPlanBadgeStyle(user?.plan || "Free")}`}>
+                    {user?.plan || "Free"} Plan
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => logout()}
+                className={`w-full py-2.5 border rounded-xl text-xs font-black tracking-wide uppercase flex items-center justify-center gap-2 cursor-pointer transition-all ${
+                  isLight 
+                    ? "bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50 hover:text-zinc-950" 
+                    : "bg-zinc-900 border-zinc-800 text-zinc-350 hover:bg-zinc-800 hover:text-white"
+                }`}
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                Sign Out
+              </button>
             </div>
-          </div>
-
+          )}
         </div>
       </aside>
 
@@ -241,9 +285,9 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
                 <Zap className="w-6 h-6 animate-pulse" />
               </div>
               <div>
-                <h3 className="font-extrabold text-xl">SocialEngage AI Center</h3>
-                <p className={`text-xs ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>
-                  Understand the platform's generation tools and metrics.
+                <h3 className="font-extrabold text-xl">AI Content Generator</h3>
+                <p className={`text-xs mt-1.5 leading-relaxed ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>
+                  AI Content Generator is a SaaS platform that helps businesses, marketers, and content creators create high-quality content quickly and efficiently using artificial intelligence.
                 </p>
               </div>
             </div>
@@ -283,6 +327,15 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
                 </h4>
                 <p className={`text-xs leading-relaxed ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>
                   Extracts and targets relevant keywords from your post contents to output a copy-pasteable pack of 5 to 12 hashtags, optimizing your organic reach.
+                </p>
+              </div>
+
+              <div className={`border-b pb-3 ${isLight ? "border-zinc-100" : "border-zinc-900"}`}>
+                <h4 className="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2 mb-1">
+                  🚀 Professional Content Suite
+                </h4>
+                <p className={`text-xs leading-relaxed ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>
+                  Generates Blog & Articles, Social Posts, Ads Copy, Email templates, Product Descriptions, Website layout copy, Video Scripts, SEO meta-content, Summaries, and Polished Enhancements.
                 </p>
               </div>
 

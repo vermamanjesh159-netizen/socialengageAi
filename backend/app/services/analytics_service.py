@@ -13,7 +13,7 @@ class AnalyticsService:
         # 1. Total Counts
         total_comments = db.query(CommentHistory).filter(
             CommentHistory.user_id == user_id, 
-            CommentHistory.comment_type == "comment"
+            CommentHistory.comment_type != "reply"
         ).count()
         
         total_replies = db.query(CommentHistory).filter(

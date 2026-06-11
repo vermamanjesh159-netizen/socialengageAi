@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import { SidebarLayout } from "../../components/SidebarLayout";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button } from "../../components/ui";
+import { Card, CardContent, Button } from "../../components/ui";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../lib/api";
 import { useToastStore } from "../../store/toast";
 import { useThemeStore } from "../../store/theme";
+import { MarkdownRenderer } from "../../components/MarkdownRenderer";
 import { 
   Search, 
   Trash2, 
@@ -14,6 +15,21 @@ import {
   FileSpreadsheet, 
   Clock
 } from "lucide-react";
+
+interface HistoryLog {
+  id: number;
+  platform: string;
+  comment_type?: string;
+  style?: string;
+  input_content: string;
+  output_content: string;
+  humanization_score?: number;
+  spam_detected?: boolean;
+  duplicate_detected?: boolean;
+  quality_rating?: number;
+  generation_time_ms?: number;
+  created_at: string;
+}
 
 export default function HistoryPage() {
   const addToast = useToastStore((state) => state.addToast);
@@ -26,10 +42,10 @@ export default function HistoryPage() {
   const [search, setSearch] = useState("");
 
   // Load History Logs
-  const { data: logs, isLoading } = useQuery({
+  const { data: logs, isLoading } = useQuery<HistoryLog[]>({
     queryKey: ["history", platform, search],
     queryFn: async () => {
-      const params: any = {};
+      const params: Record<string, string> = {};
       if (platform) params.platform = platform;
       if (search) params.search = search;
       const resp = await api.get("/history", { params });
@@ -76,7 +92,7 @@ export default function HistoryPage() {
       } else {
         addToast("Export failed.", "error");
       }
-    } catch (err) {
+    } catch {
       addToast("Failed to execute export download.", "error");
     }
   };
@@ -122,16 +138,16 @@ export default function HistoryPage() {
       case "TikTok":
         return {
           bg: "bg-gradient-to-r from-[#00F2FE] to-[#FE0979]",
-          text: "text-rose-550 dark:text-[#FE0979]",
-          border: "border-[#00F2FE] dark:border-[#FE0979]",
+          text: isLight ? "text-rose-600" : "text-[#FE0979]",
+          border: isLight ? "border-[#00F2FE]" : "border-[#FE0979]",
           badge: "bg-[#00F2FE]/10 dark:bg-[#FE0979]/10 border-[#00F2FE]/20 dark:border-[#FE0979]/20 text-indigo-900 dark:text-[#FE0979]"
         };
       default:
         return {
           bg: "bg-indigo-600",
-          text: "text-indigo-650",
+          text: "text-indigo-600",
           border: "border-indigo-500",
-          badge: "bg-indigo-500/10 border-indigo-500/20 text-indigo-550"
+          badge: "bg-indigo-500/10 border-indigo-500/20 text-indigo-500"
         };
     }
   };
@@ -192,7 +208,7 @@ export default function HistoryPage() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 className={`text-3xl font-extrabold tracking-tight ${isLight ? "text-zinc-900" : "text-white"}`}>
-              History Log & Audits
+              Generation History
             </h1>
             <p className={`${isLight ? "text-zinc-500" : "text-zinc-400"} text-sm mt-1`}>
               Review, filter, and export all generated comments, replies, and quality metrics.
@@ -275,7 +291,7 @@ export default function HistoryPage() {
             </div>
           ) : (
             <div className="flex flex-col gap-4">
-              {logs?.map((log: any) => {
+              {logs?.map((log: HistoryLog) => {
                 const logPlatColors = getPlatformColors(log.platform);
                 return (
                   <Card key={log.id} className={`border transition-all duration-300 relative overflow-hidden ${
@@ -330,24 +346,24 @@ export default function HistoryPage() {
                       {/* Inputs and Output details */}
                       <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                         <div className="md:col-span-5 flex flex-col gap-1.5">
-                          <span className={`text-[9px] font-black uppercase tracking-wider ${isLight ? "text-zinc-455" : "text-zinc-500"}`}>
+                          <span className={`text-[9px] font-black uppercase tracking-wider ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>
                             Target Post Topic Input
                           </span>
                           <div className={`text-xs p-3 rounded-lg border line-clamp-3 ${
-                            isLight ? "bg-zinc-50/50 border-zinc-150 text-zinc-600" : "bg-zinc-950/50 border-zinc-900/50 text-zinc-400"
+                            isLight ? "bg-zinc-50/50 border-zinc-200 text-zinc-700" : "bg-zinc-950/50 border-zinc-900/50 text-zinc-300"
                           }`}>
                             {log.input_content}
                           </div>
                         </div>
 
                         <div className="md:col-span-7 flex flex-col gap-1.5">
-                          <span className={`text-[9px] font-black uppercase tracking-wider ${isLight ? "text-zinc-455" : "text-zinc-500"}`}>
+                          <span className={`text-[9px] font-black uppercase tracking-wider ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>
                             AI Generated Response Output
                           </span>
-                          <div className={`text-xs font-semibold p-3 rounded-lg border select-all ${
-                            isLight ? "bg-zinc-50/50 border-zinc-150 text-zinc-800" : "bg-zinc-950/50 border-zinc-900/50 text-zinc-200"
+                          <div className={`text-xs p-3 rounded-lg border select-all ${
+                            isLight ? "bg-zinc-50/50 border-zinc-200 text-zinc-800" : "bg-zinc-950/50 border-zinc-900/50 text-zinc-200"
                           }`}>
-                            {log.output_content}
+                            <MarkdownRenderer content={log.output_content} />
                           </div>
                         </div>
                       </div>
@@ -360,7 +376,7 @@ export default function HistoryPage() {
                           <span>Human Likeness: <span className="text-indigo-500 dark:text-indigo-400">{log.humanization_score}%</span></span>
                           <span>Spam: <span className={log.spam_detected ? "text-amber-500" : "text-emerald-500"}>{log.spam_detected ? "Detected" : "Clean"}</span></span>
                           <span>Duplicate: <span className={log.duplicate_detected ? "text-amber-500" : "text-emerald-500"}>{log.duplicate_detected ? "Detected" : "Clean"}</span></span>
-                          <span>Quality: <span className="text-indigo-550 dark:text-indigo-400">{log.quality_rating}/5</span></span>
+                          <span>Quality: <span className="text-indigo-600 dark:text-indigo-400">{log.quality_rating}/5</span></span>
                         </div>
                         <div>
                           <span>Speed: <span className={isLight ? "text-zinc-500" : "text-zinc-400"}>{log.generation_time_ms}ms</span></span>

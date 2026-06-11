@@ -26,7 +26,8 @@ def generate_single_comment(
             temperature=req.temperature,
             comment_length=req.comment_length,
             content_url=req.content_url,
-            comment_type=req.comment_type
+            comment_type=req.comment_type,
+            web_search=req.web_search
         )
         return comment
     except ValueError as e:
@@ -69,7 +70,8 @@ def generate_bulk_comments(
                 persona_id=req.persona_id,
                 temperature=temp,
                 comment_length=req.comment_length,
-                comment_type=req.comment_type
+                comment_type=req.comment_type,
+                web_search=req.web_search
             )
             
             # Simple deduplication check in the current batch
@@ -88,7 +90,8 @@ def generate_bulk_comments(
                     persona_id=req.persona_id,
                     temperature=0.95,
                     comment_length=req.comment_length,
-                    comment_type=req.comment_type
+                    comment_type=req.comment_type,
+                    web_search=req.web_search
                 )
                 generated_comments.append(comment)
         except ValueError as e:

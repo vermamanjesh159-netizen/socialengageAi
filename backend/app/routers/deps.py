@@ -8,18 +8,29 @@ from app.database import get_db
 from app.models.user import User
 from app.schemas.user import TokenPayload
 
+from app.core.security import verify_token
+
 reusable_oauth2 = OAuth2PasswordBearer(
-    tokenUrl=f"{settings.API_V1_STR}/auth/login/oauth"
+    tokenUrl=f"{settings.API_V1_STR}/auth/login/oauth",
+    auto_error=False
 )
 
 def get_current_user(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    token: Optional[str] = Depends(reusable_oauth2)
 ) -> User:
+    if token:
+        user_id = verify_token(token)
+        if user_id:
+            user = db.query(User).filter(User.id == user_id).first()
+            if user:
+                return user
+
     # Always return a default active administrator user in local/free mode
-    default_user = db.query(User).filter(User.email == "admin@socialengage.ai").first()
+    default_user = db.query(User).filter(User.email == "admin@aicontentgenerator.ai").first()
     if not default_user:
         default_user = User(
-            email="admin@socialengage.ai",
+            email="admin@aicontentgenerator.ai",
             hashed_password="local_bypass_hashed_password_placeholder",
             full_name="Default User",
             is_active=True,

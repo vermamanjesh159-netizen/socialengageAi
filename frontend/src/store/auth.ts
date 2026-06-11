@@ -14,7 +14,7 @@ export interface User {
 
 export const DEFAULT_GUEST_USER: User = {
   id: 1,
-  email: "guest@socialengage.ai",
+  email: "guest@aicontentgenerator.ai",
   full_name: "Local User",
   plan: "Unlimited",
   comments_used_this_month: 0,
@@ -59,10 +59,17 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
   checkAuth: async () => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
+    if (!token) {
+      set({ user: DEFAULT_GUEST_USER, loading: false, isInitialized: true });
+      return;
+    }
     try {
       const resp = await api.get("/users/me");
       set({ user: resp.data, loading: false, isInitialized: true });
     } catch (err) {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
       set({ user: DEFAULT_GUEST_USER, loading: false, isInitialized: true });
     }
   },

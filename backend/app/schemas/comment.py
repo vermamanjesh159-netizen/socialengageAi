@@ -11,6 +11,7 @@ class CommentGenerateRequest(BaseModel):
     generate_count: int = Field(1, ge=1, le=100)
     comment_length: str = Field("medium", description="Length control: short, medium, long")
     comment_type: str = Field("comment", description="Generation type: comment, caption, bio, hashtags")
+    web_search: bool = Field(False, description="Enable real-time web search to gather context before generation")
 
 class CommentResponse(BaseModel):
     id: Optional[int] = None
@@ -32,6 +33,7 @@ class BulkCommentGenerateRequest(BaseModel):
     generate_count: int = Field(10, ge=1, le=100)
     comment_length: str = "medium"
     comment_type: str = "comment"
+    web_search: bool = Field(False, description="Enable real-time web search for context")
 
 class BulkCommentResponse(BaseModel):
     comments: List[CommentResponse]

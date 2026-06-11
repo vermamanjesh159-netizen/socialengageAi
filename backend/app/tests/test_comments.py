@@ -1,4 +1,8 @@
-def test_persona_and_generation_flow(client):
+from unittest.mock import patch
+from app.services.comment_service import comment_service
+
+@patch.object(comment_service, "_call_ollama", return_value="Fake generated test content.")
+def test_persona_and_generation_flow(mock_call, client):
     # 1. Register & Login
     client.post(
         "/api/auth/register",

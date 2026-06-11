@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import EmailStr
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "SocialEngage AI"
+    PROJECT_NAME: str = "AI Content Generator"
     API_V1_STR: str = "/api"
     
     # Security & JWT
@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     OLLAMA_URL: str = "http://localhost:11434"
     DEFAULT_OLLAMA_MODEL: str = "llama3:latest"
     GROQ_API_KEY: Optional[str] = None
+    TINYFISH_API_KEY: Optional[str] = None
     
     # CORS
     BACKEND_CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:8000", "http://127.0.0.1:3000"]

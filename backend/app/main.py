@@ -79,4 +79,4 @@ app.include_router(health.router) # Root level health check
 
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to SocialEngage AI - Comment & Reply Automation Platform API"}
+    return {"message": "Welcome to AI Content Generator - Comment & Reply Automation Platform API"}
